@@ -76,7 +76,7 @@
          this.CrackStatusLBL.Font = new System.Drawing.Font("맑은 고딕", 10.944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
          this.CrackStatusLBL.Location = new System.Drawing.Point(407, 388);
          this.CrackStatusLBL.Name = "CrackStatusLBL";
-         this.CrackStatusLBL.Size = new System.Drawing.Size(99, 25);
+         this.CrackStatusLBL.Size = new System.Drawing.Size(103, 28);
          this.CrackStatusLBL.TabIndex = 3;
          this.CrackStatusLBL.Text = "크랙상태 :";
          this.CrackStatusLBL.Click += new System.EventHandler(this.CrackStatusLBL_Click);
@@ -93,14 +93,17 @@
          // 
          // ProcessSelctCB
          // 
+         this.ProcessSelctCB.DropDownHeight = 300;
          this.ProcessSelctCB.Font = new System.Drawing.Font("맑은 고딕", 10.944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
          this.ProcessSelctCB.FormattingEnabled = true;
+         this.ProcessSelctCB.IntegralHeight = false;
          this.ProcessSelctCB.Location = new System.Drawing.Point(61, 196);
          this.ProcessSelctCB.Name = "ProcessSelctCB";
          this.ProcessSelctCB.Size = new System.Drawing.Size(277, 33);
          this.ProcessSelctCB.TabIndex = 5;
          this.ProcessSelctCB.Text = "프로세스 선택";
          this.ProcessSelctCB.SelectedIndexChanged += new System.EventHandler(this.ProcessSelctCB_SelectedIndexChanged);
+         this.ProcessSelctCB.Click += new System.EventHandler(this.ProcessSelctCB_Click);
          // 
          // CloseBT
          // 
@@ -126,7 +129,7 @@
          this.Controls.Add(this.ProcessSelectLBL);
          this.Controls.Add(this.label1);
          this.Name = "MainForm";
-         this.Text = "@@";
+         this.Text = "cheatBot";
          this.ResumeLayout(false);
          this.PerformLayout();
 
