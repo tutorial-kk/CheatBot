@@ -18,6 +18,11 @@ namespace CheatEngineBot
       ProcessMemoryReader mem = new ProcessMemoryReader();
       bool attach = false;
 
+      static Step2DataStruct step2DataAddr = new Step2DataStruct(0x480); //health offset(0x480)
+      static int[] array = { 0x0 };
+
+      Step2Data step2Data = new Step2Data(0x005FD5D0, array, step2DataAddr);
+
       public MainForm()
       {
          InitializeComponent();
@@ -76,12 +81,39 @@ namespace CheatEngineBot
       private void CloseBT_Click(object sender, EventArgs e) //닫기버튼
       {
          DialogResult result;
-         result = MessageBox.Show("종료하시겠습니까?", "종료메세지", MessageBoxButtons.YesNo);
+         result = MessageBox.Show("종료하시겠습니까?", "종료메세지", 
+                                 MessageBoxButtons.YesNo);
          if (result ==  DialogResult.Yes)
          {
             this.DialogResult = DialogResult.Abort;
             Application.Exit();
          }
+      }
+
+      private void MainForm_Load(object sender, EventArgs e)
+      {
+
+      }
+
+      private void LoopTMR_Tick(object sender, EventArgs e)
+      {
+         if (attach)
+         {
+            try
+            {
+               // step2 value를 찿아서 모니터링
+               int structAddr = mem.ReadMultiLevelPointer(
+                        step2Data.baseAdress, 4, step2Data.multiLevel);
+               ValueLBL.Text = "Step2Value : " + mem.ReadInt(structAddr + 
+                                          step2Data.offsets.step2_health);
+
+            }
+            catch (Exception ex)
+            {
+               MessageBox.Show("읽기 쓰기 에러 !!!" + ex.Message);
+               throw;
+            }
+         }//크랙을 동작시켰을때, 현재크랙의 값을 수정
       }
    }
 }
