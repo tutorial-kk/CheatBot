@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Security.Principal; //관리자권한실행관련
+using System.Diagnostics; //진단
+
+
 
 namespace CheatEngineBot
 {
@@ -14,9 +18,41 @@ namespace CheatEngineBot
       [STAThread]
       static void Main()
       {
-         Application.EnableVisualStyles();
-         Application.SetCompatibleTextRenderingDefault(false);
-         Application.Run(new MainForm());
+         if (IsAdministrator() == false) //관리자권한으로 실행되지않으면
+         {
+            try
+            {
+               ProcessStartInfo procInfo = new ProcessStartInfo();
+               procInfo.UseShellExecute = true;
+               procInfo.FileName = Application.ExecutablePath;
+               procInfo.WorkingDirectory = Environment.CurrentDirectory;
+               procInfo.Verb = "runas";
+               Process.Start(procInfo);
+            }
+            catch (Exception ex)
+            {
+               MessageBox.Show(ex.Message.ToString());
+                return;
+            }
+          }
+        else
+         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
+         }
+      }
+
+      private static bool IsAdministrator()   
+      {
+         WindowsIdentity identity = WindowsIdentity.GetCurrent();
+
+         if (null != identity)
+         {
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+         }
+         return false;
       }
    }
 

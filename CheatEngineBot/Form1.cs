@@ -17,6 +17,7 @@ namespace CheatEngineBot
       Process[ ] MyProcess;
       ProcessMemoryReader mem = new ProcessMemoryReader();
       bool attach = false;
+      bool crackState = false;
 
       static Step2DataStruct step2DataAddr = new Step2DataStruct(0x480); //health offset(0x480)
       static int[] array = { 0x0 };
@@ -107,13 +108,36 @@ namespace CheatEngineBot
                ValueLBL.Text = "Step2Value : " + mem.ReadInt(structAddr + 
                                           step2Data.offsets.step2_health);
 
+               // 크랙이 값을 수정하는 코드
+               int hotkey = ProcessMemoryReaderApi.GetKeyState(0x02); // mouse_R button- 0x02
+               if ((hotkey & 0x8000)!=0) //키가눌렸을 경우
+               {
+                  if (crackState == false)
+                  {
+                     crackState = true;
+                     CrackStatusLBL.Text = "크랙 상태 : ON";
+                  }
+                  else
+                  {
+                     crackState = false;
+                     CrackStatusLBL.Text = "크랙 상태 : OFF";
+                  }
+               }
+               if (crackState)   Step2Solve(structAddr); //value 를 1000으로 고정해주는 함수
             }
             catch (Exception ex)
             {
+               crackState = false;
                MessageBox.Show("읽기 쓰기 에러 !!!" + ex.Message);
                throw;
             }
          }//크랙을 동작시켰을때, 현재크랙의 값을 수정
+      }
+
+      private void Step2Solve(int structAddr)
+      {
+         mem.WriteInt(structAddr+step2Data.offsets.step2_health, 1000);
+         //throw new NotImplementedException();
       }
    }
 }
